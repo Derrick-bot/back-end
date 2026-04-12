@@ -214,7 +214,7 @@ const resolvers = {
 				actor: user._id,
 				message: `${user.name} começou a seguir você`,
 			});
-			
+
 			return true;
 		},
 
@@ -320,10 +320,9 @@ const resolvers = {
 				project: projectId,
 			});
 
-			await Project.findByIdAndUpdate(
-				projectId,
-				{ $inc: { commentsCount: 1 } }
-			);
+			await Project.findByIdAndUpdate(projectId, {
+				$inc: { commentsCount: 1 },
+			});
 
 			await Notification.create({
 				type: "comment",
@@ -333,7 +332,7 @@ const resolvers = {
 				message: `${user.name} comentou no seu projeto`,
 			});
 
-			return comment;
+			return Comment.findById(comment._id).populate("user");
 		},
 
 		updateComment: async (_, { commentId, text }, { user }) => {
@@ -419,15 +418,16 @@ const resolvers = {
 				project: projectId,
 			});
 
-			if (!like) throw new Error("Like não encontrado");
-
-			await Project.findByIdAndUpdate(
-				projectId,
-				{ $inc: { likesCount: -1 } }
-			);
+			if (like) {
+				await Project.findByIdAndUpdate(
+					projectId,
+					{ $inc: { likesCount: -1 } }
+				);
+			}
 
 			return true;
 		},
+
 		markNotificationAsRead: async (_, { id }, { user }) => {
 			if (!user) throw new Error("Não autenticado");
 
@@ -468,7 +468,18 @@ const resolvers = {
 	},
 
 	Project: {
-		id: (parent) => parent._id.toString()
+		id: (parent) => parent._id.toString(),
+
+		likedByMe: async (parent, _, { user }) => {
+			if (!user) return false
+
+			const like = await Like.findOne({
+				user: user._id,
+				project: parent._id,
+			})
+
+			return !!like
+		}
 	},
 
 	Comment: {

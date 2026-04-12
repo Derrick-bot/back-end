@@ -29,7 +29,9 @@ const typeDefs = gql`
 		user: User
 		createdAt: String
 		likesCount: Int
+		likedByMe: Boolean!
 		commentsCount: Int
+		comments: Comment
 	}
 
 	type Comment {
@@ -144,6 +146,7 @@ const typeDefs = gql`
 		unlikeProject(
 			projectId: ID!
 		): Boolean
+
 		markNotificationAsRead(
 			id: ID!
 		): Boolean
