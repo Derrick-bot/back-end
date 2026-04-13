@@ -401,7 +401,7 @@ const resolvers = {
 
 			await Notification.create({
 				type: "like",
-				recipient: project.user, // dono do projeto
+				recipient: project.user,
 				actor: user._id,
 				project: projectId,
 				message: `${user.name} curtiu seu projeto`,
