@@ -17,6 +17,8 @@ const typeDefs = gql`
 		projectsCount: Int!
 		followersCount: Int!
 		followingCount: Int!
+		followedByMe: Boolean!
+		createdAt: String!
 	}
 
 	type Project {
