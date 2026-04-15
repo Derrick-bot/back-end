@@ -14,11 +14,11 @@ const typeDefs = gql`
 		description: String
 		area: String
 		contact: String
+		createdAt: String!
 		projectsCount: Int!
 		followersCount: Int!
 		followingCount: Int!
 		followedByMe: Boolean!
-		createdAt: String!
 	}
 
 	type Project {
