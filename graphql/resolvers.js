@@ -466,7 +466,18 @@ const resolvers = {
 		followingCount: async (parent) => {
 			return Follow.countDocuments({ follower: parent._id });
 		},
-	},
+
+		followedByMe: async (parent, _, { user }) => {
+			if (!user) return false
+
+				const follow = await Follow.findOne({
+					follower: user._id,
+					following: parent._id
+				})
+
+				return !!follow
+		}
+	}
 
 	Project: {
 		id: (parent) => parent._id.toString(),
