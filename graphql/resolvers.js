@@ -169,7 +169,8 @@ const resolvers = {
 				name,
 				email,
 				password: hashedPassword,
-				area
+				area,
+				createdAt: new Date()
 			});
 
 			const token = jwt.sign(
