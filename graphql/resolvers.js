@@ -477,7 +477,7 @@ const resolvers = {
 
 				return !!follow
 		}
-	}
+	},
 
 	Project: {
 		id: (parent) => parent._id.toString(),
